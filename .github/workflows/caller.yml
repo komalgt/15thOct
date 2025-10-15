@@ -1,17 +1,9 @@
-name: Build, Test, Deploy Template
+name: Legacy CI
 
 on:
-  workflow_call:
-    inputs:
-      app_name:
-        required: true
-        type: string
-      environment:
-        required: true
-        type: string
-    secrets:
-      DEPLOY_TOKEN:
-        required: true
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -19,24 +11,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Install dependencies
         run: npm install
-
-      - name: Build ${{ inputs.app_name }}
+      - name: Build app
         run: npm run build
 
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Run tests
+      - name: Test app
         run: npm test
 
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy ${{ inputs.app_name }} to ${{ inputs.environment }}
-        run: echo "Deploying ${{ inputs.app_name }} to ${{ inputs.environment }} with token ${{ secrets.DEPLOY_TOKEN }}"
-
+      - name: Deploy to prod
+        run: echo "Deploying with ${{ secrets.DEPLOY_TOKEN }}"
