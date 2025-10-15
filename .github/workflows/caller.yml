@@ -1,4 +1,4 @@
-name: Legacy CI
+name: App Pipeline Using Template
 
 on:
   push:
@@ -6,26 +6,10 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Install dependencies
-        run: npm install
-      - name: Build app
-        run: npm run build
-
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test app
-        run: npm test
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to prod
-        run: echo "Deploying with ${{ secrets.DEPLOY_TOKEN }}"
+  main:
+    uses: ./.github/workflows/build-test-deploy-template.yml
+    with:
+      app_name: "my-awesome-app"
+      environment: "production"
+    secrets:
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
