@@ -1,64 +1,41 @@
-name: "REusable file: Build, Test & Deploy"
+name: Build, Test, Deploy Template
 
 on:
   workflow_call:
     inputs:
-      environment:
-        required: true
-        type: string
-        description: 'Deployment environment (e.g., dev, staging, prod)'
       app_name:
         required: true
         type: string
-        description: 'Application name'
+      environment:
+        required: true
+        type: string
     secrets:
       DEPLOY_TOKEN:
         required: true
-        description: 'Deployment token or API key'
 
 jobs:
   build:
-    name: Build ${{ inputs.app_name }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Dependencies
+      
+      - name: Install dependencies
         run: npm install
 
-      - name: Build
+      - name: Build ${{ inputs.app_name }}
         run: npm run build
 
   test:
-    name: Test ${{ inputs.app_name }}
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Run Tests
+      - name: Run tests
         run: npm test
 
   deploy:
-    name: Deploy ${{ inputs.app_name }} to ${{ inputs.environment }}
-    runs-on: ubuntu-latest
     needs: test
+    runs-on: ubuntu-latest
     steps:
-      - name: Deploy to ${{ inputs.environment }}
+      - name: Deploy ${{ inputs.app_name }} to ${{ inputs.environment }}
         run: echo "Deploying ${{ inputs.app_name }} to ${{ inputs.environment }} with token ${{ secrets.DEPLOY_TOKEN }}"
-        # Replace above with actual deploy step (e.g., use rsync, scp, or API call)
