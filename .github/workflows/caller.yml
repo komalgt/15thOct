@@ -1,0 +1,13 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  use-template:
+    uses: ./.github/workflows/build-test-deploy-template.yml
+    with:
+      environment: 'production'
+      app_name: 'my-node-app'
+    secrets:
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
