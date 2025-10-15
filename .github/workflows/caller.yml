@@ -1,15 +1,41 @@
-name: "CI Pipeline for My App"
+name: Build, Test, Deploy Template
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      app_name:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+    secrets:
+      DEPLOY_TOKEN:
+        required: true
 
 jobs:
-  use-template:
-    uses: ./.github/workflows/build-test-deploy-template.yml
-    with:
-      app_name: 'my-node-app'
-      environment: 'production'
-    secrets:
-      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build ${{ inputs.app_name }}
+        run: npm run build
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run tests
+        run: npm test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy ${{ inputs.app_name }} to ${{ inputs.environment }}
+        run: echo "Deploying ${{ inputs.app_name }} to ${{ inputs.environment }} with token ${{ secrets.DEPLOY_TOKEN }}"
