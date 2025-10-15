@@ -1,8 +1,12 @@
+name: Caller for build Test & deploy..
 on:
   push:
     branches:
       - main
-
+    paths:
+      - 'caller.yml'            
+      - '.github/workflows/caller.yml'     
+      
 jobs:
   use-template:
     uses: ./.github/workflows/build-test-deploy-template.yml
