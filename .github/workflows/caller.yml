@@ -1,7 +1,9 @@
 name: Build, Test, Deploy Template
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - main
     inputs:
       app_name:
         required: true
