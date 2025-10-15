@@ -1,0 +1,34 @@
+name: On-Demand Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Choose the deployment environment'
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+      version:
+        description: 'Application version to deploy (e.g., 1.2.3)'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Show Inputs
+        run: |
+          echo "Deploying to environment: ${{ github.event.inputs.environment }}"
+          echo "Deploying version: ${{ github.event.inputs.version }}"
+
+      - name: Deploy Application
+        run: |
+          chmod +x ./deploy-script.sh
+          ./deploy-script.sh --env ${{ github.event.inputs.environment }} --version ${{ github.event.inputs.version }}
