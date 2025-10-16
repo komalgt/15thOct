@@ -1,0 +1,28 @@
+name: Send Email Notification
+on:
+  workflow_call:
+    inputs:
+      failed_job: { required: true, type: string }
+      run_url: { required: true, type: string }
+      sha: { required: true, type: string }
+      actor: { required: true, type: string }
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email on failure
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.example.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "❌ Job Failure: ${{ inputs.failed_job }}"
+          to: you@example.com
+          from: notifier@example.com
+          body: |
+            Job ${{ inputs.failed_job }} failed!
+            Commit: ${{ inputs.sha }}
+            By: ${{ inputs.actor }}
+            See: ${{ inputs.run_url }}
