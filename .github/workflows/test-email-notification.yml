@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Check Something
         run: |
-          echo "Simulating your real step here
+          echo "Simulating your real step hereee
           # exit 0  # Pass
           # exit 1  # Fail (uncomment to test notification)
 
