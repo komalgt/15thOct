@@ -1,0 +1,26 @@
+name: Test Email Notification
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Something
+        run: |
+          echo "Simulating your real step here"
+          # Insert a command that may pass or fail for real-world testing, e.g.:
+          # run: curl https://your-service/health
+          # To simulate a pass, use exit 0; to simulate a fail, use exit 1
+          # exit 0
+
+  notify_on_failure:
+    needs: check_job
+    if: failure()
+    uses: ./.github/workflows/send-email-notification.yml
+    with:
+      failed_job: "check_job"
+      run_url: ${{ github.run_url }}
+      sha: ${{ github.sha }}
+      actor: ${{ github.actor }}
