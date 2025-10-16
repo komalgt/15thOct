@@ -31,6 +31,6 @@ jobs:
             Actor: ${{ github.actor }}
             Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
             Please review the workflow logs for more details.
-          to: "target.email@example.com"
-          from: "your-bot@example.com"
+          to: "kturakannavar@deloitte.com"
+          from: "komalgt@gmail.com.com"
           secure: false # <-- Set to false for port 587
