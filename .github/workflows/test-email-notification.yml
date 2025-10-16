@@ -13,8 +13,7 @@ jobs:
       - name: Check Something
         run: |
           echo "Simulating your real step here....."
-          # exit 0  # Pass
-          # exit 1  # Fail (uncomment to test notification)
+          exit 1  # Fail (causes job to fail and triggers failure email)
 
       - name: Send deployment failure email
         if: failure()
