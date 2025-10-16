@@ -1,7 +1,9 @@
 name: Test Email Notification
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   check_job:
@@ -10,10 +12,8 @@ jobs:
       - name: Check Something
         run: |
           echo "Simulating your real step here"
-          # Insert a command that may pass or fail for real-world testing, e.g.:
-          # run: curl https://your-service/health
-          # To simulate a pass, use exit 0; to simulate a fail, use exit 1
-          # exit 0
+          # exit 0  # Pass
+          # exit 1  # Fail (uncomment to test notification)
 
   notify_on_failure:
     needs: check_job
