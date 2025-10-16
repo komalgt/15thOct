@@ -1,0 +1,31 @@
+name: Security Scan
+
+on:
+  pull_request:
+    branches:
+      - main    # or your default branch
+
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # adjust to your version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Snyk scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+        # Fail the workflow (and thus block PR) if vulnerabilities found
+        with:
+          command: monitor
+        continue-on-error: false # ensures workflow fails if vulnerabilities found
