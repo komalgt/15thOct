@@ -14,16 +14,3 @@ jobs:
       environment: "production"
     secrets:
       DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-
-  notify-failure:
-    uses: ./.github/workflows/send-email-notification.yml
-    needs: main
-    if: ${{ needs.main.result == 'failure' }}
-    with:
-      failed_job: "main"
-      result: ${{ needs.main.result }}
-      app_name: ${{ inputs.app_name }}
-      environment: ${{ inputs.environment }}
-      run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-      sha: ${{ github.sha }}
-      actor: ${{ github.actor }}
