@@ -16,8 +16,8 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 587
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
+          username: komalgt@gmail.com
+          password: Gan@!9164
           subject: "❌ Job Failure: ${{ inputs.failed_job }}"
           to: kturakannavar@deloitte.com
           from: komalgt@gmail.com
