@@ -13,3 +13,18 @@ jobs:
       environment: "production"
     secrets:
       DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+      
+  notify-failure:
+    needs: [build, test, deploy]
+    runs-on: ubuntu-latest
+    if: failure()
+    uses: ./.github/workflows/send-email-notification.yml
+    with:
+      failed_job: ${{ job.status }}
+      app_name: ${{ inputs.app_name }}
+      environment: ${{ inputs.environment }}
+      run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      sha: ${{ github.sha }}
+      actor: ${{ github.actor }}
+
