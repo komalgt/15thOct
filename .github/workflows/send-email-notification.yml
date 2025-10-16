@@ -19,8 +19,8 @@ jobs:
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: "❌ Job Failure: ${{ inputs.failed_job }}"
-          to: you@example.com
-          from: notifier@example.com
+          to: kturakannavar@deloitte.com
+          from: komalgt@gmail.com
           body: |
             Job ${{ inputs.failed_job }} failed!
             Commit: ${{ inputs.sha }}
