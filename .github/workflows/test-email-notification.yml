@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: Check Something
         run: |
-          echo "Simulating your real step here....."
-          exit 1  # Fail (causes job to fail and triggers failure email)
+          echo "Simulating failure"
+          exit 1
 
       - name: Send deployment failure email
         if: failure()
@@ -33,4 +33,4 @@ jobs:
             Please review the workflow logs for more details.
           to: "target.email@example.com"
           from: "your-bot@example.com"
-          secure: true
+          secure: false # <-- Set to false for port 587
